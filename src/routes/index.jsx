@@ -14,9 +14,12 @@ import ForgetPwd from "../pages/Authentication/ForgetPassword";
 import Dashboard from "../pages/Dashboard/index";
 import Calendar from "../pages/Calendar/index";
 
+import FormLayout from "../pages/Forms/FormLayout";
+
 const authProtectedRoutes = [
   { path: "/dashboard", component: <Dashboard /> },
   { path: "/calendar", component: <Calendar /> },
+  { path: "/form", component: <FormLayout /> },
 
   //profile
   { path: "/profile", component: <UserProfile /> },
