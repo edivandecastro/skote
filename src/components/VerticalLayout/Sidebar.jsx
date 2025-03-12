@@ -15,7 +15,6 @@ import logoLightSvg from "../../assets/images/logo-light.svg";
 import logoDark from "../../assets/images/logo-dark.png";
 
 const Sidebar = (props) => {
-  console.log('[1]=>', props)
   return (
     <React.Fragment>
       <div className="vertical-menu">
