@@ -1,10 +1,24 @@
 import React from "react";
 import { withTranslation } from "react-i18next";
-import { Container, Row, Col, Card, CardTitle, CardBody, Form, Input } from "reactstrap";
+import { Container, Row, Col, Card, CardTitle, CardBody, Form, Input, FormFeedback } from "reactstrap";
+import { useFormik } from "formik";
+import * as yup from "yup";
 
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
 const FormLayout = (props) => {
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+    },
+    validationSchema: yup.object({
+      name: yup.string().required("O nome é obrigatório"),
+    }),
+    onSubmit: (values) => {
+      console.log(values);
+    }
+  });
+
   return (
     <React.Fragment>
       <div className="page-content">
@@ -16,10 +30,25 @@ const FormLayout = (props) => {
                 <CardBody>
                   <CardTitle className="mb-4">{props.t('Application')}</CardTitle>
 
-                  <Form onSubmit={e => e.preventDefault()}>
+                  <Form onSubmit={formik.handleSubmit}>
                     <div className="mb-3">
                       <label htmlFor="name-input">{props.t('Name')}</label>
-                      <Input type="text" className="form-control" id="name-input" />
+                      <Input
+                        id="application-name"
+                        type="text"
+                        name="name"
+                        className="form-control"
+                        placeholder="Informe o nome da aplicação"
+                        value={formik.values.name}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        invalid={formik.touched.name && formik.errors.name ? true : false}
+                      />
+                      {
+                        formik.errors.name && formik.touched.name ? (
+                          <FormFeedback type="invalid">{formik.errors.name}</FormFeedback>
+                        ) : null
+                      }
                     </div>
                     <div>
                       <button type="submit" className="btn btn-primary w-md">
