@@ -155,5 +155,7 @@
   "Extra Pages": "Páginas Extras",
   "Horizontal layout": "Layout Horizontal",
   "Light Sidebar": "Barra Lateral Clara",
-  "Compact Sidebar": "Barra Lateral Compacta"
+  "Compact Sidebar": "Barra Lateral Compacta",
+  "Data sent successfully": "Dados enviados com sucesso",
+  "There was an error sending the data": "Houve um erro ao enviar os dados"
 }

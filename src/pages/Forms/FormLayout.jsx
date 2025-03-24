@@ -1,12 +1,25 @@
-import React from "react";
+import React, { useState } from "react";
 import { withTranslation } from "react-i18next";
-import { Container, Row, Col, Card, CardTitle, CardBody, Form, Input, FormFeedback } from "reactstrap";
+import { Container, Row, Col, Card, CardTitle, CardBody, Form, Input, FormFeedback, UncontrolledAlert, Alert } from "reactstrap";
 import { useFormik } from "formik";
 import * as yup from "yup";
+import axios from "axios";
+import { baseURL } from "../../service/api_service";
 
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
 const FormLayout = (props) => {
+  const [alertData, setAlertData] = useState({
+    isOpen: false,
+    color: "",
+    icon: "",
+    message: ""
+  });
+
+  const onDismissAlert = () => {
+    setAlertData({ ...alertData, isOpen: false });
+  };
+
   const formik = useFormik({
     initialValues: {
       name: "",
@@ -14,8 +27,30 @@ const FormLayout = (props) => {
     validationSchema: yup.object({
       name: yup.string().required("O nome é obrigatório"),
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: async (values) => {
+      try {
+        const response = await axios.post('http://localhost:3000/v1/transactions', values, {
+          headers: {
+            'Content-Type': 'application/json',
+          },
+        });
+
+        if (response.status === 201) {
+          setAlertData({
+            isOpen: true,
+            color: "success",
+            icon: "mdi mdi-check-all me-2",
+            message: props.t('Data sent successfully'),
+          });
+        }
+      } catch (error) {
+        setAlertData({
+          isOpen: true,
+          color: "danger",
+          icon: "mdi mdi-block-helper me-2",
+          message: props.t('There was an error sending the data'),
+        });
+      }
     }
   });
 
@@ -29,6 +64,10 @@ const FormLayout = (props) => {
               <Card>
                 <CardBody>
                   <CardTitle className="mb-4">{props.t('Application')}</CardTitle>
+
+                  <Alert color={alertData.color} isOpen={alertData.isOpen} toggle={onDismissAlert}>
+                    <i className={alertData.icon}></i>{alertData.message}
+                  </Alert>
 
                   <Form onSubmit={formik.handleSubmit}>
                     <div className="mb-3">
