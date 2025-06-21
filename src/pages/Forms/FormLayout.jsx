@@ -3,12 +3,15 @@ import { withTranslation } from "react-i18next";
 import { Container, Row, Col, Card, CardTitle, CardBody, Form, Input, FormFeedback, UncontrolledAlert, Alert } from "reactstrap";
 import { useFormik } from "formik";
 import * as yup from "yup";
-import axios from "axios";
-import { baseURL } from "../../service/api_service";
+import Button from "../../components/UI/Button";
 
 import Breadcrumb from "../../components/Common/Breadcrumb";
 
+import { useCreateTransaction } from "../../hooks/useCreateTransaction";
+
 const FormLayout = (props) => {
+  const { mutate, isPending } = useCreateTransaction();
+
   const [alertData, setAlertData] = useState({
     isOpen: false,
     color: "",
@@ -25,32 +28,29 @@ const FormLayout = (props) => {
       name: "",
     },
     validationSchema: yup.object({
-      name: yup.string().required("O nome é obrigatório"),
+      name: yup.string().required(props.t("required field", { fieldName: props.t('Name') })),
     }),
     onSubmit: async (values) => {
-      try {
-        const response = await axios.post('http://localhost:3000/v1/transactions', values, {
-          headers: {
-            'Content-Type': 'application/json',
-          },
-        });
-
-        if (response.status === 201) {
+      mutate(values, {
+        onSuccess: () => {
           setAlertData({
             isOpen: true,
             color: "success",
             icon: "mdi mdi-check-all me-2",
-            message: props.t('Data sent successfully'),
+            message: props.t("Data sent successfully")
+          });
+
+          formik.resetForm();
+        },
+        onError: (error) => {
+          setAlertData({
+            isOpen: true,
+            color: "danger",
+            icon: "mdi mdi-block-helper me-2",
+            message: props.t("There was an error sending the data")
           });
         }
-      } catch (error) {
-        setAlertData({
-          isOpen: true,
-          color: "danger",
-          icon: "mdi mdi-block-helper me-2",
-          message: props.t('There was an error sending the data'),
-        });
-      }
+      });
     }
   });
 
@@ -90,9 +90,7 @@ const FormLayout = (props) => {
                       }
                     </div>
                     <div>
-                      <button type="submit" className="btn btn-primary w-md">
-                        {props.t('Save')}
-                      </button>
+                      <Button label={props.t('Save')} loading={isPending} t={props.t} />
                     </div>
                   </Form>
                 </CardBody>
