@@ -19,7 +19,7 @@ import HorizontalLayout from "./components/HorizontalLayout/";
 import NonAuthLayout from "./components/NonAuthLayout";
 
 // Import scss
-import "./assets/scss/theme.scss";
+// import "./assets/scss/theme.scss";
 
 // Import Firebase Configuration file
 // import { initFirebaseBackend } from "./helpers/firebase_helper"
@@ -47,13 +47,13 @@ const App = (props) => {
   const selectLayoutState = (state) => state.Layout;
   const LayoutProperties = createSelector(
     selectLayoutState,
-      (layout) => ({
-        layoutType: layout.layoutType,
-      })
+    (layout) => ({
+      layoutType: layout.layoutType,
+    })
   );
 
-    const {
-      layoutType
+  const {
+    layoutType
   } = useSelector(LayoutProperties);
 
   function getLayout(layoutType) {
