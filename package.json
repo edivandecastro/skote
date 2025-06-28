@@ -102,6 +102,7 @@
     "redux-form": "^8.3.10",
     "redux-saga": "^1.2.3",
     "regenerator-runtime": "^0.13.11",
+    "simplebar-react": "^3.3.1",
     "styled-components": "^6.0.6",
     "swiper": "^10.1.0",
     "toastr": "^2.1.4",
