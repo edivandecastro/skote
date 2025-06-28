@@ -1,6 +1,17 @@
 import React, { useState } from "react";
 import { withTranslation } from "react-i18next";
-import { Container, Row, Col, Card, CardTitle, CardBody, Form, Input, FormFeedback, UncontrolledAlert, Alert } from "reactstrap";
+import {
+  Container,
+  Row,
+  Col,
+  Card,
+  CardTitle,
+  CardBody,
+  Form,
+  Input,
+  FormFeedback,
+  Alert,
+} from "reactstrap";
 import { useFormik } from "formik";
 import * as yup from "yup";
 import Button from "../../components/UI/Button";
@@ -26,9 +37,11 @@ const FormLayout = (props) => {
   const formik = useFormik({
     initialValues: {
       name: "",
+      description: ""
     },
     validationSchema: yup.object({
       name: yup.string().required(props.t("required field", { fieldName: props.t('Name') })),
+      description: yup.string().required(props.t("required field", { fieldName: props.t('Description') })),
     }),
     onSubmit: async (values) => {
       mutate(values, {
@@ -86,6 +99,25 @@ const FormLayout = (props) => {
                       {
                         formik.errors.name && formik.touched.name ? (
                           <FormFeedback type="invalid">{formik.errors.name}</FormFeedback>
+                        ) : null
+                      }
+                    </div>
+                    <div className="mb-3">
+                      <label htmlFor="name-input">{props.t('Description')}</label>
+                      <Input
+                        id="application-description"
+                        type="text"
+                        name="description"
+                        className="form-control"
+                        placeholder="Informe a descrição da aplicação"
+                        value={formik.values.description}
+                        onChange={formik.handleChange}
+                        onBlur={formik.handleBlur}
+                        invalid={formik.touched.description && formik.errors.description ? true : false}
+                      />
+                      {
+                        formik.errors.description && formik.touched.description ? (
+                          <FormFeedback type="invalid">{formik.errors.description}</FormFeedback>
                         ) : null
                       }
                     </div>

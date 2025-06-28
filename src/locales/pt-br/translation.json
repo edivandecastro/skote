@@ -159,5 +159,6 @@
   "Data sent successfully": "Dados enviados com sucesso",
   "There was an error sending the data": "Houve um erro ao enviar os dados",
   "Wait": "Aguarde",
-  "required field": "O {{fieldName}} é obrigatório"
+  "required field": "O {{fieldName}} é obrigatório",
+  "Description": "Descrição"
 }
